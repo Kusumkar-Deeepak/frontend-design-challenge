@@ -15,6 +15,7 @@ export default function Modal({ isOpen, onClose, title, children }) {
         alignItems: "center",
         justifyContent: "center",
         zIndex: 1000,
+        animation: "fadeIn 0.2s ease",
       }}
       onClick={onClose}
     >
@@ -26,6 +27,7 @@ export default function Modal({ isOpen, onClose, title, children }) {
           maxWidth: "500px",
           width: "90%",
           border: `1px solid ${colors.border}`,
+          animation: "slideIn 0.3s ease",
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -57,7 +59,10 @@ export default function Modal({ isOpen, onClose, title, children }) {
               color: colors.textSecondary,
               padding: 0,
               lineHeight: 1,
+              transition: "color 0.15s ease",
             }}
+            onMouseEnter={(e) => (e.target.style.color = colors.text)}
+            onMouseLeave={(e) => (e.target.style.color = colors.textSecondary)}
           >
             ×
           </button>

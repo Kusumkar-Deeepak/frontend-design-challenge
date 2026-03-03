@@ -13,7 +13,9 @@ export default function Dashboard() {
   const [activePage, setActivePage] = useState("dashboard");
   const [showStopModal, setShowStopModal] = useState(false);
   const [showScanDetail, setShowScanDetail] = useState(false);
+  const [showNewScanModal, setShowNewScanModal] = useState(false);
   const [selectedScan, setSelectedScan] = useState(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [toast, setToast] = useState({
     visible: false,
     message: "",
@@ -61,20 +63,56 @@ export default function Dashboard() {
     setShowScanDetail(true);
   };
 
-  return (
-    <div style={{ display: "flex", minHeight: "100vh" }}>
-      <Sidebar activePage={activePage} onNavigate={setActivePage} />
+  const handleNewScan = () => {
+    setShowNewScanModal(true);
+  };
 
-      <div style={{ marginLeft: "260px", flex: 1 }}>
+  const handleNewScanSubmit = (scanData) => {
+    setShowNewScanModal(false);
+    setToast({
+      visible: true,
+      message: "New scan created successfully!",
+      type: "success",
+    });
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        minHeight: "100vh",
+        backgroundColor: colors.bg,
+      }}
+    >
+      <Sidebar
+        activePage={activePage}
+        onNavigate={setActivePage}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
+
+      <div
+        style={{
+          marginLeft: window.innerWidth > 768 ? "260px" : "0",
+          flex: 1,
+          minWidth: 0,
+          transition: "margin-left 0.2s ease",
+        }}
+      >
         <OrgBar
           stats={stats}
           onExport={handleExport}
           onStopScan={handleStopScan}
+          onMenuClick={() => setSidebarOpen(!sidebarOpen)}
         />
 
-        <main style={{ padding: "24px" }}>
+        <main style={{ padding: window.innerWidth > 768 ? "24px" : "16px" }}>
           <SeverityCards data={totalVulns} />
-          <ScanTable scans={scanData} onRowClick={handleRowClick} />
+          <ScanTable
+            scans={scanData}
+            onRowClick={handleRowClick}
+            onNewScan={handleNewScan}
+          />
         </main>
       </div>
 
@@ -108,7 +146,14 @@ export default function Dashboard() {
               fontSize: "14px",
               fontWeight: "500",
               cursor: "pointer",
+              transition: "all 0.15s ease",
             }}
+            onMouseEnter={(e) =>
+              (e.target.style.backgroundColor = colors.hover)
+            }
+            onMouseLeave={(e) =>
+              (e.target.style.backgroundColor = "transparent")
+            }
           >
             Cancel
           </button>
@@ -123,7 +168,10 @@ export default function Dashboard() {
               fontSize: "14px",
               fontWeight: "500",
               cursor: "pointer",
+              transition: "all 0.15s ease",
             }}
+            onMouseEnter={(e) => (e.target.style.backgroundColor = "#DC2626")}
+            onMouseLeave={(e) => (e.target.style.backgroundColor = "#EF4444")}
           >
             Stop Scan
           </button>
@@ -310,6 +358,143 @@ export default function Dashboard() {
             </div>
           </div>
         )}
+      </Modal>
+
+      {/* New Scan Modal */}
+      <Modal
+        isOpen={showNewScanModal}
+        onClose={() => setShowNewScanModal(false)}
+        title="Create New Scan"
+      >
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          <div>
+            <label
+              style={{
+                display: "block",
+                fontSize: "14px",
+                fontWeight: "500",
+                color: colors.text,
+                marginBottom: "8px",
+              }}
+            >
+              Scan Name
+            </label>
+            <input
+              type="text"
+              placeholder="e.g., Web App Servers"
+              style={{
+                width: "100%",
+                padding: "10px 12px",
+                border: `1px solid ${colors.border}`,
+                borderRadius: "8px",
+                backgroundColor: colors.card,
+                color: colors.text,
+                fontSize: "14px",
+                outline: "none",
+              }}
+            />
+          </div>
+
+          <div>
+            <label
+              style={{
+                display: "block",
+                fontSize: "14px",
+                fontWeight: "500",
+                color: colors.text,
+                marginBottom: "8px",
+              }}
+            >
+              Scan Type
+            </label>
+            <select
+              style={{
+                width: "100%",
+                padding: "10px 12px",
+                border: `1px solid ${colors.border}`,
+                borderRadius: "8px",
+                backgroundColor: colors.card,
+                color: colors.text,
+                fontSize: "14px",
+                outline: "none",
+              }}
+            >
+              <option>Greybox</option>
+              <option>Blackbox</option>
+              <option>Whitebox</option>
+            </select>
+          </div>
+
+          <div>
+            <label
+              style={{
+                display: "block",
+                fontSize: "14px",
+                fontWeight: "500",
+                color: colors.text,
+                marginBottom: "8px",
+              }}
+            >
+              Target URL
+            </label>
+            <input
+              type="text"
+              placeholder="https://example.com"
+              style={{
+                width: "100%",
+                padding: "10px 12px",
+                border: `1px solid ${colors.border}`,
+                borderRadius: "8px",
+                backgroundColor: colors.card,
+                color: colors.text,
+                fontSize: "14px",
+                outline: "none",
+              }}
+            />
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              gap: "12px",
+              justifyContent: "flex-end",
+              marginTop: "8px",
+            }}
+          >
+            <button
+              onClick={() => setShowNewScanModal(false)}
+              style={{
+                padding: "10px 20px",
+                border: `1px solid ${colors.border}`,
+                borderRadius: "8px",
+                backgroundColor: "transparent",
+                color: colors.text,
+                fontSize: "14px",
+                fontWeight: "500",
+                cursor: "pointer",
+                transition: "all 0.15s ease",
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleNewScanSubmit}
+              style={{
+                padding: "10px 20px",
+                border: "none",
+                borderRadius: "8px",
+                backgroundColor: colors.accent,
+                color: "#FFFFFF",
+                fontSize: "14px",
+                fontWeight: "500",
+                cursor: "pointer",
+                transition: "all 0.15s ease",
+              }}
+            >
+              Create Scan
+            </button>
+          </div>
+        </div>
       </Modal>
 
       {/* Toast Notification */}

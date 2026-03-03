@@ -42,6 +42,7 @@ export default function Toast({
         display: "flex",
         alignItems: "center",
         gap: "12px",
+        animation: "slideIn 0.3s ease",
       }}
     >
       <span>{type === "success" ? "✅" : type === "error" ? "❌" : "ℹ️"}</span>

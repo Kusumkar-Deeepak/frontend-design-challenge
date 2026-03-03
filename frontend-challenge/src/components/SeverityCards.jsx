@@ -51,7 +51,12 @@ export default function SeverityCards({ data }) {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
+          gridTemplateColumns:
+            window.innerWidth > 1024
+              ? "repeat(4, 1fr)"
+              : window.innerWidth > 768
+                ? "repeat(2, 1fr)"
+                : "1fr",
           gap: "16px",
         }}
       >
@@ -60,6 +65,17 @@ export default function SeverityCards({ data }) {
             key={card.label}
             style={{
               padding: "20px",
+              borderRadius: "8px",
+              transition: "all 0.2s ease",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = colors.hover;
+              e.currentTarget.style.transform = "translateY(-2px)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+              e.currentTarget.style.transform = "translateY(0)";
             }}
           >
             <div

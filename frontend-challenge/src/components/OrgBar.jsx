@@ -1,7 +1,8 @@
 import { useTheme } from "../context/ThemeContext";
 
-export default function OrgBar({ stats, onExport, onStopScan }) {
+export default function OrgBar({ stats, onExport, onStopScan, onMenuClick }) {
   const { colors } = useTheme();
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
 
   return (
     <div style={{ backgroundColor: colors.card }}>
@@ -12,34 +13,70 @@ export default function OrgBar({ stats, onExport, onStopScan }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "0 24px",
+          padding: "0 16px",
           borderBottom: `1px solid ${colors.border}`,
+          gap: "12px",
         }}
       >
-        {/* Breadcrumb */}
+        {/* Left: Menu + Breadcrumb */}
         <div
-          style={{ display: "flex", alignItems: "center", fontSize: "14px" }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            flex: 1,
+            minWidth: 0,
+          }}
         >
-          <span style={{ color: colors.textSecondary }}>Scan</span>
-          <span style={{ color: colors.textSecondary, margin: "0 8px" }}>
-            /
-          </span>
-          <span style={{ color: colors.textSecondary }}>Private Assets</span>
-          <span style={{ color: colors.textSecondary, margin: "0 8px" }}>
-            /
-          </span>
-          <span style={{ color: colors.accent, fontWeight: "500" }}>
-            New Scan
-          </span>
+          {isMobile && (
+            <button
+              onClick={onMenuClick}
+              style={{
+                background: "none",
+                border: "none",
+                fontSize: "24px",
+                cursor: "pointer",
+                color: colors.text,
+                padding: "4px",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              ☰
+            </button>
+          )}
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              fontSize: "14px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            <span style={{ color: colors.textSecondary }}>Scan</span>
+            <span style={{ color: colors.textSecondary, margin: "0 8px" }}>
+              /
+            </span>
+            <span style={{ color: colors.textSecondary }}>Private Assets</span>
+            <span style={{ color: colors.textSecondary, margin: "0 8px" }}>
+              /
+            </span>
+            <span style={{ color: colors.accent, fontWeight: "500" }}>
+              New Scan
+            </span>
+          </div>
         </div>
 
         {/* Buttons */}
-        <div style={{ display: "flex", gap: "12px" }}>
+        <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>
           <button
             onClick={onExport}
             style={{
               height: "38px",
-              padding: "0 20px",
+              padding: "0 16px",
               border: `1px solid ${colors.border}`,
               borderRadius: "8px",
               backgroundColor: "transparent",
@@ -47,15 +84,23 @@ export default function OrgBar({ stats, onExport, onStopScan }) {
               fontSize: "14px",
               fontWeight: "500",
               cursor: "pointer",
+              transition: "all 0.15s ease",
+              whiteSpace: "nowrap",
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = colors.hover;
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = "transparent";
             }}
           >
-            Export Report
+            {isMobile ? "📄" : "Export Report"}
           </button>
           <button
             onClick={onStopScan}
             style={{
               height: "38px",
-              padding: "0 20px",
+              padding: "0 16px",
               border: "none",
               borderRadius: "8px",
               backgroundColor: "#EF4444",
@@ -63,9 +108,17 @@ export default function OrgBar({ stats, onExport, onStopScan }) {
               fontSize: "14px",
               fontWeight: "500",
               cursor: "pointer",
+              transition: "all 0.15s ease",
+              whiteSpace: "nowrap",
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = "#DC2626";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = "#EF4444";
             }}
           >
-            Stop Scan
+            {isMobile ? "⏹️" : "Stop Scan"}
           </button>
         </div>
       </div>
