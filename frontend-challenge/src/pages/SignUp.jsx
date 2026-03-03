@@ -1,7 +1,7 @@
 import AuthCard from "../components/AuthCard";
 import FeatureList from "../components/FeatureList";
 
-function SignUp({ onLogin }) {
+function SignUp() {
   return (
     <div className="flex flex-col lg:flex-row min-h-screen relative overflow-hidden">
       {/* Base linear gradient */}
@@ -139,7 +139,7 @@ function SignUp({ onLogin }) {
           zIndex: 1,
         }}
       >
-        <AuthCard onLogin={onLogin} />
+        <AuthCard />
       </div>
     </div>
   );

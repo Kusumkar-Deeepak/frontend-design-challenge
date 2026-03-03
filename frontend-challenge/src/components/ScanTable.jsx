@@ -1,7 +1,12 @@
 import { useTheme } from "../context/ThemeContext";
 import { useState, useEffect } from "react";
 
-export default function ScanTable({ scans, onRowClick, onNewScan }) {
+export default function ScanTable({
+  scans,
+  onRowClick,
+  onNewScan,
+  selectedScanId,
+}) {
   const { colors, isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
@@ -380,85 +385,101 @@ export default function ScanTable({ scans, onRowClick, onNewScan }) {
         </div>
 
         {/* Rows */}
-        {paginatedScans.map((scan) => (
-          <div
-            key={scan.id}
-            onClick={() => onRowClick(scan)}
-            style={{
-              display: "grid",
-              gridTemplateColumns:
-                `${visibleColumns.name ? "2fr" : ""} ${visibleColumns.type ? "1fr" : ""} ${visibleColumns.status ? "1fr" : ""} ${visibleColumns.progress ? "1.2fr" : ""} ${visibleColumns.vulnerabilities ? "auto" : ""} ${visibleColumns.lastScan ? "110px" : ""}`.trim(),
-              padding: "14px 20px",
-              borderBottom: `1px solid ${colors.border}`,
-              cursor: "pointer",
-              transition: "background-color 0.15s",
-              alignItems: "center",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = colors.hover)
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "transparent")
-            }
-          >
-            {visibleColumns.name && (
-              <div
-                style={{
-                  fontSize: "14px",
-                  fontWeight: "500",
-                  color: colors.text,
-                }}
-              >
-                {scan.name}
-              </div>
-            )}
+        {paginatedScans.map((scan) => {
+          const isSelected = selectedScanId === scan.id;
+          return (
+            <div
+              key={scan.id}
+              onClick={() => onRowClick(scan)}
+              style={{
+                display: "grid",
+                gridTemplateColumns:
+                  `${visibleColumns.name ? "2fr" : ""} ${visibleColumns.type ? "1fr" : ""} ${visibleColumns.status ? "1fr" : ""} ${visibleColumns.progress ? "1.2fr" : ""} ${visibleColumns.vulnerabilities ? "auto" : ""} ${visibleColumns.lastScan ? "110px" : ""}`.trim(),
+                padding: "14px 20px",
+                borderBottom: `1px solid ${colors.border}`,
+                borderLeft: isSelected
+                  ? `3px solid ${colors.accent}`
+                  : "3px solid transparent",
+                backgroundColor: isSelected
+                  ? isDark
+                    ? "#1A3A3A"
+                    : "#E6F7F4"
+                  : "transparent",
+                cursor: "pointer",
+                transition: "all 0.15s",
+                alignItems: "center",
+              }}
+              onMouseEnter={(e) => {
+                if (!isSelected)
+                  e.currentTarget.style.backgroundColor = colors.hover;
+              }}
+              onMouseLeave={(e) => {
+                if (!isSelected)
+                  e.currentTarget.style.backgroundColor = "transparent";
+              }}
+            >
+              {visibleColumns.name && (
+                <div
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: "500",
+                    color: colors.text,
+                  }}
+                >
+                  {scan.name}
+                </div>
+              )}
 
-            {visibleColumns.type && (
-              <div style={{ fontSize: "14px", color: colors.textSecondary }}>
-                {scan.type}
-              </div>
-            )}
+              {visibleColumns.type && (
+                <div style={{ fontSize: "14px", color: colors.textSecondary }}>
+                  {scan.type}
+                </div>
+              )}
 
-            {visibleColumns.status && (
-              <div>
-                <StatusChip status={scan.status} />
-              </div>
-            )}
+              {visibleColumns.status && (
+                <div>
+                  <StatusChip status={scan.status} />
+                </div>
+              )}
 
-            {visibleColumns.progress && (
-              <div>
-                <ProgressBar progress={scan.progress} colors={colors} />
-              </div>
-            )}
+              {visibleColumns.progress && (
+                <div>
+                  <ProgressBar progress={scan.progress} colors={colors} />
+                </div>
+              )}
 
-            {visibleColumns.vulnerabilities && (
-              <div style={{ display: "flex", gap: "8px" }}>
-                <VulnBadge
-                  count={scan.vulnerabilities.critical}
-                  color="#EF4444"
-                />
-                <VulnBadge count={scan.vulnerabilities.high} color="#F97316" />
-                <VulnBadge
-                  count={scan.vulnerabilities.medium}
-                  color="#F59E0B"
-                />
-                <VulnBadge count={scan.vulnerabilities.low} color="#10B981" />
-              </div>
-            )}
+              {visibleColumns.vulnerabilities && (
+                <div style={{ display: "flex", gap: "8px" }}>
+                  <VulnBadge
+                    count={scan.vulnerabilities.critical}
+                    color="#EF4444"
+                  />
+                  <VulnBadge
+                    count={scan.vulnerabilities.high}
+                    color="#F97316"
+                  />
+                  <VulnBadge
+                    count={scan.vulnerabilities.medium}
+                    color="#F59E0B"
+                  />
+                  <VulnBadge count={scan.vulnerabilities.low} color="#10B981" />
+                </div>
+              )}
 
-            {visibleColumns.lastScan && (
-              <div
-                style={{
-                  fontSize: "14px",
-                  color: colors.textSecondary,
-                  textAlign: "right",
-                }}
-              >
-                {scan.lastScan}
-              </div>
-            )}
-          </div>
-        ))}
+              {visibleColumns.lastScan && (
+                <div
+                  style={{
+                    fontSize: "14px",
+                    color: colors.textSecondary,
+                    textAlign: "right",
+                  }}
+                >
+                  {scan.lastScan}
+                </div>
+              )}
+            </div>
+          );
+        })}
 
         {/* Empty State */}
         {paginatedScans.length === 0 && (

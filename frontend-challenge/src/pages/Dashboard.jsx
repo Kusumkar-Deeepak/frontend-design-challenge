@@ -4,9 +4,11 @@ import Sidebar from "../components/Sidebar";
 import OrgBar from "../components/OrgBar";
 import SeverityCards from "../components/SeverityCards";
 import ScanTable from "../components/ScanTable";
+import ScanDetail from "./ScanDetail";
 import Modal from "../components/Modal";
 import Toast from "../components/Toast";
 import scanData from "../data/mockScans.json";
+import scanDetailData from "../data/mockScanDetail.json";
 
 export default function Dashboard() {
   const { colors } = useTheme();
@@ -63,6 +65,20 @@ export default function Dashboard() {
     setShowScanDetail(true);
   };
 
+  const handleBackToList = () => {
+    setShowScanDetail(false);
+    setSelectedScan(null);
+  };
+
+  const handlePageChange = (page) => {
+    setActivePage(page);
+    setShowScanDetail(false);
+    setSelectedScan(null);
+    if (window.innerWidth <= 768) {
+      setSidebarOpen(false);
+    }
+  };
+
   const handleNewScan = () => {
     setShowNewScanModal(true);
   };
@@ -86,7 +102,7 @@ export default function Dashboard() {
     >
       <Sidebar
         activePage={activePage}
-        onNavigate={setActivePage}
+        onNavigate={handlePageChange}
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
@@ -97,23 +113,214 @@ export default function Dashboard() {
           flex: 1,
           minWidth: 0,
           transition: "margin-left 0.2s ease",
+          position: "relative",
+          display: "flex",
         }}
       >
-        <OrgBar
-          stats={stats}
-          onExport={handleExport}
-          onStopScan={handleStopScan}
-          onMenuClick={() => setSidebarOpen(!sidebarOpen)}
-        />
-
-        <main style={{ padding: window.innerWidth > 768 ? "24px" : "16px" }}>
-          <SeverityCards data={totalVulns} />
-          <ScanTable
-            scans={scanData}
-            onRowClick={handleRowClick}
-            onNewScan={handleNewScan}
+        {/* Main Dashboard Content */}
+        <div
+          style={{
+            flex: 1,
+            minWidth: 0,
+            transition: "all 0.3s ease",
+            opacity: showScanDetail ? 0.5 : 1,
+          }}
+        >
+          <OrgBar
+            stats={stats}
+            onExport={handleExport}
+            onStopScan={handleStopScan}
+            onMenuClick={() => setSidebarOpen(!sidebarOpen)}
+            currentPage={activePage}
           />
-        </main>
+
+          <main
+            style={{
+              padding: window.innerWidth > 768 ? "24px" : "16px",
+              animation: "fadeIn 0.3s ease",
+            }}
+          >
+            {activePage === "dashboard" && (
+              <>
+                <h1
+                  style={{
+                    fontSize: "28px",
+                    fontWeight: "700",
+                    color: colors.text,
+                    marginBottom: "24px",
+                  }}
+                >
+                  Welcome to Dashboard
+                </h1>
+                <SeverityCards data={totalVulns} />
+                <div
+                  style={{
+                    marginTop: "32px",
+                    padding: "32px",
+                    backgroundColor: colors.card,
+                    border: `1px solid ${colors.border}`,
+                    borderRadius: "12px",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "48px",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    📊
+                  </div>
+                  <h2
+                    style={{
+                      fontSize: "20px",
+                      fontWeight: "600",
+                      color: colors.text,
+                      marginBottom: "8px",
+                    }}
+                  >
+                    Dashboard Overview
+                  </h2>
+                  <p
+                    style={{
+                      fontSize: "14px",
+                      color: colors.textSecondary,
+                      marginBottom: "24px",
+                    }}
+                  >
+                    View your security metrics and vulnerability statistics
+                  </p>
+                  <button
+                    onClick={() => setActivePage("scans")}
+                    style={{
+                      padding: "12px 24px",
+                      backgroundColor: colors.accent,
+                      color: "#FFFFFF",
+                      border: "none",
+                      borderRadius: "8px",
+                      fontSize: "14px",
+                      fontWeight: "500",
+                      cursor: "pointer",
+                      transition: "all 0.15s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.transform = "translateY(-2px)";
+                      e.target.style.boxShadow = "0 4px 12px rgba(12, 200, 168, 0.4)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.transform = "translateY(0)";
+                      e.target.style.boxShadow = "none";
+                    }}
+                  >
+                    View All Scans →
+                  </button>
+                </div>
+              </>
+            )}
+
+            {activePage === "scans" && (
+              <>
+                <SeverityCards data={totalVulns} />
+                <ScanTable
+                  scans={scanData}
+                  onRowClick={handleRowClick}
+                  onNewScan={handleNewScan}
+                  selectedScanId={selectedScan?.id}
+                />
+              </>
+            )}
+
+            {["projects", "schedule", "notifications", "settings", "support"].includes(activePage) && (
+              <div
+                style={{
+                  padding: "48px 24px",
+                  textAlign: "center",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "64px",
+                    marginBottom: "16px",
+                  }}
+                >
+                  {activePage === "projects" && "📁"}
+                  {activePage === "schedule" && "📅"}
+                  {activePage === "notifications" && "🔔"}
+                  {activePage === "settings" && "⚙️"}
+                  {activePage === "support" && "💬"}
+                </div>
+                <h2
+                  style={{
+                    fontSize: "24px",
+                    fontWeight: "600",
+                    color: colors.text,
+                    marginBottom: "8px",
+                    textTransform: "capitalize",
+                  }}
+                >
+                  {activePage}
+                </h2>
+                <p
+                  style={{
+                    fontSize: "14px",
+                    color: colors.textSecondary,
+                  }}
+                >
+                  This section is coming soon
+                </p>
+              </div>
+            )}
+          </main>
+        </div>
+
+        {/* Side Panel for Scan Detail */}
+        <div
+          style={{
+            position: "fixed",
+            right: showScanDetail ? "0" : "-100%",
+            top: 0,
+            width:
+              window.innerWidth > 1200
+                ? "65%"
+                : window.innerWidth > 768
+                  ? "75%"
+                  : "100%",
+            maxWidth: "900px",
+            minWidth: window.innerWidth > 768 ? "600px" : "100%",
+            height: "100vh",
+            backgroundColor: colors.bg,
+            boxShadow: showScanDetail
+              ? "-4px 0 24px rgba(0, 0, 0, 0.15)"
+              : "none",
+            transition: "right 0.3s ease",
+            zIndex: 1001,
+            overflowY: "auto",
+          }}
+        >
+          {showScanDetail && (
+            <ScanDetail
+              scan={scanDetailData}
+              onBack={handleBackToList}
+              onExport={handleExport}
+              onStop={handleStopScan}
+            />
+          )}
+        </div>
+
+        {/* Overlay */}
+        {showScanDetail && (
+          <div
+            onClick={handleBackToList}
+            style={{
+              position: "fixed",
+              inset: 0,
+              backgroundColor: "rgba(0, 0, 0, 0.3)",
+              zIndex: 1000,
+              animation: "fadeIn 0.3s ease",
+              marginLeft: window.innerWidth > 768 ? "260px" : "0",
+            }}
+          />
+        )}
       </div>
 
       {/* Stop Scan Confirmation Modal */}
@@ -178,189 +385,7 @@ export default function Dashboard() {
         </div>
       </Modal>
 
-      {/* Scan Detail Modal */}
-      <Modal
-        isOpen={showScanDetail}
-        onClose={() => setShowScanDetail(false)}
-        title={selectedScan?.name || "Scan Details"}
-      >
-        {selectedScan && (
-          <div>
-            <div style={{ marginBottom: "20px" }}>
-              <div
-                style={{
-                  fontSize: "14px",
-                  color: colors.textSecondary,
-                  marginBottom: "8px",
-                }}
-              >
-                Scan Type
-              </div>
-              <div
-                style={{
-                  fontSize: "16px",
-                  color: colors.text,
-                  fontWeight: "500",
-                }}
-              >
-                {selectedScan.type}
-              </div>
-            </div>
-
-            <div style={{ marginBottom: "20px" }}>
-              <div
-                style={{
-                  fontSize: "14px",
-                  color: colors.textSecondary,
-                  marginBottom: "8px",
-                }}
-              >
-                Status
-              </div>
-              <div
-                style={{
-                  fontSize: "16px",
-                  color: colors.text,
-                  fontWeight: "500",
-                }}
-              >
-                {selectedScan.status} - {selectedScan.progress}%
-              </div>
-            </div>
-
-            <div style={{ marginBottom: "20px" }}>
-              <div
-                style={{
-                  fontSize: "14px",
-                  color: colors.textSecondary,
-                  marginBottom: "12px",
-                }}
-              >
-                Vulnerabilities Found
-              </div>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "12px",
-                }}
-              >
-                <div
-                  style={{
-                    padding: "12px",
-                    backgroundColor: colors.hover,
-                    borderRadius: "8px",
-                  }}
-                >
-                  <div
-                    style={{ fontSize: "12px", color: colors.textSecondary }}
-                  >
-                    Critical Severity
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "24px",
-                      fontWeight: "700",
-                      color: "#EF4444",
-                    }}
-                  >
-                    {selectedScan.vulnerabilities.critical}
-                  </div>
-                </div>
-                <div
-                  style={{
-                    padding: "12px",
-                    backgroundColor: colors.hover,
-                    borderRadius: "8px",
-                  }}
-                >
-                  <div
-                    style={{ fontSize: "12px", color: colors.textSecondary }}
-                  >
-                    High Severity
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "24px",
-                      fontWeight: "700",
-                      color: "#F97316",
-                    }}
-                  >
-                    {selectedScan.vulnerabilities.high}
-                  </div>
-                </div>
-                <div
-                  style={{
-                    padding: "12px",
-                    backgroundColor: colors.hover,
-                    borderRadius: "8px",
-                  }}
-                >
-                  <div
-                    style={{ fontSize: "12px", color: colors.textSecondary }}
-                  >
-                    Medium Severity
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "24px",
-                      fontWeight: "700",
-                      color: "#F59E0B",
-                    }}
-                  >
-                    {selectedScan.vulnerabilities.medium}
-                  </div>
-                </div>
-                <div
-                  style={{
-                    padding: "12px",
-                    backgroundColor: colors.hover,
-                    borderRadius: "8px",
-                  }}
-                >
-                  <div
-                    style={{ fontSize: "12px", color: colors.textSecondary }}
-                  >
-                    Low Severity
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "24px",
-                      fontWeight: "700",
-                      color: "#10B981",
-                    }}
-                  >
-                    {selectedScan.vulnerabilities.low}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div
-                style={{
-                  fontSize: "14px",
-                  color: colors.textSecondary,
-                  marginBottom: "8px",
-                }}
-              >
-                Last Scanned
-              </div>
-              <div
-                style={{
-                  fontSize: "16px",
-                  color: colors.text,
-                  fontWeight: "500",
-                }}
-              >
-                {selectedScan.lastScan}
-              </div>
-            </div>
-          </div>
-        )}
-      </Modal>
-
-      {/* New Scan Modal */}
+      {/* Toast Notification */}
       <Modal
         isOpen={showNewScanModal}
         onClose={() => setShowNewScanModal(false)}

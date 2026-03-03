@@ -1,4 +1,5 @@
 import { useTheme } from "../context/ThemeContext";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 export default function Sidebar({
@@ -8,6 +9,7 @@ export default function Sidebar({
   onClose,
 }) {
   const { colors, isDark, toggleTheme } = useTheme();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => {

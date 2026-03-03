@@ -1,8 +1,20 @@
 import { useTheme } from "../context/ThemeContext";
 
-export default function OrgBar({ stats, onExport, onStopScan, onMenuClick }) {
+export default function OrgBar({ stats, onExport, onStopScan, onMenuClick, currentPage = "dashboard" }) {
   const { colors } = useTheme();
   const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+
+  const pageInfo = {
+    dashboard: { icon: "📊", title: "Dashboard", subtitle: "Overview" },
+    scans: { icon: "🔍", title: "Scans", subtitle: "Security Scans" },
+    projects: { icon: "📁", title: "Projects", subtitle: "All Projects" },
+    schedule: { icon: "📅", title: "Schedule", subtitle: "Scan Schedule" },
+    notifications: { icon: "🔔", title: "Notifications", subtitle: "Alerts" },
+    settings: { icon: "⚙️", title: "Settings", subtitle: "Configuration" },
+    support: { icon: "💬", title: "Support", subtitle: "Help Center" },
+  };
+
+  const current = pageInfo[currentPage] || pageInfo.dashboard;
 
   return (
     <div style={{ backgroundColor: colors.card }}>
@@ -54,18 +66,15 @@ export default function OrgBar({ stats, onExport, onStopScan, onMenuClick }) {
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
+              gap: "8px",
             }}
           >
-            <span style={{ color: colors.textSecondary }}>Scan</span>
-            <span style={{ color: colors.textSecondary, margin: "0 8px" }}>
-              /
+            <span style={{ fontSize: "18px" }}>{current.icon}</span>
+            <span style={{ color: colors.text, fontWeight: "600" }}>
+              {current.title}
             </span>
-            <span style={{ color: colors.textSecondary }}>Private Assets</span>
-            <span style={{ color: colors.textSecondary, margin: "0 8px" }}>
-              /
-            </span>
-            <span style={{ color: colors.accent, fontWeight: "500" }}>
-              New Scan
+            <span style={{ color: colors.textSecondary, fontSize: "12px" }}>
+              / {current.subtitle}
             </span>
           </div>
         </div>

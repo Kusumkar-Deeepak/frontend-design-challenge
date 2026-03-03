@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthInput from "./AuthInput";
 import SocialButton from "./SocialButton";
 
-function AuthCard({ onLogin }) {
+function AuthCard() {
+  const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(true);
   const [agreed, setAgreed] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -16,9 +18,7 @@ function AuthCard({ onLogin }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    if (onLogin) {
-      onLogin();
-    }
+    navigate("/dashboard");
   };
 
   return (
