@@ -126,99 +126,28 @@ export default function Dashboard() {
             opacity: showScanDetail ? 0.5 : 1,
           }}
         >
-          <OrgBar
-            stats={stats}
-            onExport={handleExport}
-            onStopScan={handleStopScan}
-            onMenuClick={() => setSidebarOpen(!sidebarOpen)}
-            currentPage={activePage}
-          />
+          {activePage !== "scans" && (
+            <OrgBar
+              stats={stats}
+              onExport={handleExport}
+              onStopScan={handleStopScan}
+              onMenuClick={() => setSidebarOpen(!sidebarOpen)}
+              currentPage={activePage}
+            />
+          )}
 
           <main
             style={{
-              padding: window.innerWidth > 768 ? "24px" : "16px",
+              padding:
+                activePage === "scans"
+                  ? "0"
+                  : window.innerWidth > 768
+                    ? "24px"
+                    : "16px",
               animation: "fadeIn 0.3s ease",
             }}
           >
             {activePage === "dashboard" && (
-              <>
-                <h1
-                  style={{
-                    fontSize: "28px",
-                    fontWeight: "700",
-                    color: colors.text,
-                    marginBottom: "24px",
-                  }}
-                >
-                  Welcome to Dashboard
-                </h1>
-                <SeverityCards data={totalVulns} />
-                <div
-                  style={{
-                    marginTop: "32px",
-                    padding: "32px",
-                    backgroundColor: colors.card,
-                    border: `1px solid ${colors.border}`,
-                    borderRadius: "12px",
-                    textAlign: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: "48px",
-                      marginBottom: "16px",
-                    }}
-                  >
-                    📊
-                  </div>
-                  <h2
-                    style={{
-                      fontSize: "20px",
-                      fontWeight: "600",
-                      color: colors.text,
-                      marginBottom: "8px",
-                    }}
-                  >
-                    Dashboard Overview
-                  </h2>
-                  <p
-                    style={{
-                      fontSize: "14px",
-                      color: colors.textSecondary,
-                      marginBottom: "24px",
-                    }}
-                  >
-                    View your security metrics and vulnerability statistics
-                  </p>
-                  <button
-                    onClick={() => setActivePage("scans")}
-                    style={{
-                      padding: "12px 24px",
-                      backgroundColor: colors.accent,
-                      color: "#FFFFFF",
-                      border: "none",
-                      borderRadius: "8px",
-                      fontSize: "14px",
-                      fontWeight: "500",
-                      cursor: "pointer",
-                      transition: "all 0.15s ease",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.transform = "translateY(-2px)";
-                      e.target.style.boxShadow = "0 4px 12px rgba(12, 200, 168, 0.4)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.transform = "translateY(0)";
-                      e.target.style.boxShadow = "none";
-                    }}
-                  >
-                    View All Scans →
-                  </button>
-                </div>
-              </>
-            )}
-
-            {activePage === "scans" && (
               <>
                 <SeverityCards data={totalVulns} />
                 <ScanTable
@@ -230,7 +159,22 @@ export default function Dashboard() {
               </>
             )}
 
-            {["projects", "schedule", "notifications", "settings", "support"].includes(activePage) && (
+            {activePage === "scans" && (
+              <ScanDetail
+                scan={scanDetailData}
+                onBack={() => setActivePage("dashboard")}
+                onExport={handleExport}
+                onStop={handleStopScan}
+              />
+            )}
+
+            {[
+              "projects",
+              "schedule",
+              "notifications",
+              "settings",
+              "support",
+            ].includes(activePage) && (
               <div
                 style={{
                   padding: "48px 24px",
@@ -530,5 +474,77 @@ export default function Dashboard() {
         onClose={() => setToast({ ...toast, visible: false })}
       />
     </div>
+  );
+}
+
+// Helper Components
+function StatItem({ label, value, colors, isError = false }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "8px 0",
+      }}
+    >
+      <span style={{ fontSize: "14px", color: colors.textSecondary }}>
+        {label}
+      </span>
+      <span
+        style={{
+          fontSize: "16px",
+          fontWeight: "600",
+          color: isError ? "#EF4444" : colors.text,
+        }}
+      >
+        {value}
+      </span>
+    </div>
+  );
+}
+
+function ActionButton({ label, icon, onClick, colors, primary = false }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        width: "100%",
+        padding: "12px 16px",
+        backgroundColor: primary ? colors.accent : colors.bg,
+        color: primary ? "#FFFFFF" : colors.text,
+        border: primary ? "none" : `1px solid ${colors.border}`,
+        borderRadius: "8px",
+        fontSize: "14px",
+        fontWeight: "500",
+        cursor: "pointer",
+        transition: "all 0.15s ease",
+        textAlign: "left",
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
+      }}
+      onMouseEnter={(e) => {
+        if (primary) {
+          e.target.style.backgroundColor = "#0BB597";
+          e.target.style.transform = "translateY(-2px)";
+          e.target.style.boxShadow = "0 4px 12px rgba(12, 200, 168, 0.3)";
+        } else {
+          e.target.style.backgroundColor = colors.hover;
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (primary) {
+          e.target.style.backgroundColor = colors.accent;
+          e.target.style.transform = "translateY(0)";
+          e.target.style.boxShadow = "none";
+        } else {
+          e.target.style.backgroundColor = colors.bg;
+        }
+      }}
+    >
+      <span style={{ fontSize: "18px" }}>{icon}</span>
+      <span>{label}</span>
+    </button>
   );
 }

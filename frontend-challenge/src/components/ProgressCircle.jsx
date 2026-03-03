@@ -2,7 +2,7 @@ import { useTheme } from "../context/ThemeContext";
 
 export default function ProgressCircle({ progress, status }) {
   const { colors } = useTheme();
-  const radius = 60;
+  const radius = 52;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
@@ -12,28 +12,28 @@ export default function ProgressCircle({ progress, status }) {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: "16px",
+        gap: "12px",
       }}
     >
-      <div style={{ position: "relative", width: "140px", height: "140px" }}>
-        <svg width="140" height="140" style={{ transform: "rotate(-90deg)" }}>
+      <div style={{ position: "relative", width: "120px", height: "120px" }}>
+        <svg width="120" height="120" style={{ transform: "rotate(-90deg)" }}>
           {/* Background circle */}
           <circle
-            cx="70"
-            cy="70"
+            cx="60"
+            cy="60"
             r={radius}
             fill="none"
             stroke={colors.border}
-            strokeWidth="8"
+            strokeWidth="6"
           />
           {/* Progress circle */}
           <circle
-            cx="70"
-            cy="70"
+            cx="60"
+            cy="60"
             r={radius}
             fill="none"
             stroke={colors.accent}
-            strokeWidth="8"
+            strokeWidth="6"
             strokeDasharray={circumference}
             strokeDashoffset={strokeDashoffset}
             strokeLinecap="round"
@@ -51,7 +51,7 @@ export default function ProgressCircle({ progress, status }) {
           }}
         >
           <div
-            style={{ fontSize: "28px", fontWeight: "700", color: colors.text }}
+            style={{ fontSize: "24px", fontWeight: "700", color: colors.text }}
           >
             {progress}%
           </div>
@@ -59,7 +59,7 @@ export default function ProgressCircle({ progress, status }) {
       </div>
       <div
         style={{
-          fontSize: "14px",
+          fontSize: "13px",
           fontWeight: "500",
           color: colors.textSecondary,
         }}

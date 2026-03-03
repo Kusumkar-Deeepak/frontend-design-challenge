@@ -1,6 +1,12 @@
 import { useTheme } from "../context/ThemeContext";
 
-export default function OrgBar({ stats, onExport, onStopScan, onMenuClick, currentPage = "dashboard" }) {
+export default function OrgBar({
+  stats,
+  onExport,
+  onStopScan,
+  onMenuClick,
+  currentPage = "dashboard",
+}) {
   const { colors } = useTheme();
   const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
 
@@ -69,13 +75,29 @@ export default function OrgBar({ stats, onExport, onStopScan, onMenuClick, curre
               gap: "8px",
             }}
           >
-            <span style={{ fontSize: "18px" }}>{current.icon}</span>
-            <span style={{ color: colors.text, fontWeight: "600" }}>
-              {current.title}
-            </span>
-            <span style={{ color: colors.textSecondary, fontSize: "12px" }}>
-              / {current.subtitle}
-            </span>
+            {currentPage === "dashboard" ? (
+              <>
+                <span style={{ color: colors.textSecondary }}>Scan</span>
+                <span style={{ color: colors.textSecondary }}>/</span>
+                <span style={{ color: colors.textSecondary }}>
+                  Private Assets
+                </span>
+                <span style={{ color: colors.textSecondary }}>/</span>
+                <span style={{ color: colors.accent, fontWeight: "500" }}>
+                  New Scan
+                </span>
+              </>
+            ) : (
+              <>
+                <span style={{ fontSize: "18px" }}>{current.icon}</span>
+                <span style={{ color: colors.text, fontWeight: "600" }}>
+                  {current.title}
+                </span>
+                <span style={{ color: colors.textSecondary, fontSize: "12px" }}>
+                  / {current.subtitle}
+                </span>
+              </>
+            )}
           </div>
         </div>
 

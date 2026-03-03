@@ -25,28 +25,28 @@ export default function StatusBar({ stats }) {
       style={{
         backgroundColor: isDark ? "#0A0A0A" : "#F9FAFB",
         borderTop: `1px solid ${colors.border}`,
-        padding: "12px 24px",
+        padding: "8px 20px",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        gap: "24px",
-        minHeight: "48px",
+        gap: "16px",
+        minHeight: "40px",
         overflowX: "auto",
         flexWrap: "wrap",
       }}
     >
-      <div style={{ display: "flex", gap: "32px", alignItems: "center" }}>
+      <div style={{ display: "flex", gap: "24px", alignItems: "center" }}>
         {items.map((item) => (
           <div
             key={item.label}
             style={{ display: "flex", gap: "8px", alignItems: "center" }}
           >
-            <span style={{ fontSize: "13px", color: colors.textSecondary }}>
+            <span style={{ fontSize: "12px", color: colors.textSecondary }}>
               {item.label}:
             </span>
             <span
               style={{
-                fontSize: "14px",
+                fontSize: "13px",
                 fontWeight: "600",
                 color: colors.text,
               }}
@@ -57,19 +57,19 @@ export default function StatusBar({ stats }) {
         ))}
       </div>
 
-      <div style={{ display: "flex", gap: "24px", alignItems: "center" }}>
+      <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
         {vulnerabilities.map((vuln) => (
           <div
             key={vuln.label}
             style={{ display: "flex", gap: "6px", alignItems: "center" }}
           >
             <span
-              style={{ fontSize: "13px", color: vuln.color, fontWeight: "500" }}
+              style={{ fontSize: "12px", color: vuln.color, fontWeight: "500" }}
             >
               {vuln.label}:
             </span>
             <span
-              style={{ fontSize: "14px", fontWeight: "700", color: vuln.color }}
+              style={{ fontSize: "13px", fontWeight: "700", color: vuln.color }}
             >
               {vuln.value}
             </span>

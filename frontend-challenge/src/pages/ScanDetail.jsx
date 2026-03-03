@@ -20,17 +20,19 @@ export default function ScanDetail({ scan, onBack, onExport, onStop }) {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+    <div
+      style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+    >
       {/* Breadcrumb Header */}
       <div
         style={{
-          height: "60px",
-          backgroundColor: colors.card,
+          height: "56px",
+          backgroundColor: colors.bg,
           borderBottom: `1px solid ${colors.border}`,
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "0 24px",
+          padding: "0 20px",
           gap: "16px",
           flexShrink: 0,
         }}
@@ -67,11 +69,15 @@ export default function ScanDetail({ scan, onBack, onExport, onStop }) {
           >
             ✕
           </button>
+          {/* <span style={{ color: colors.textSecondary }}>/</span> */}
+          <span style={{ color: colors.textSecondary }}>Scan</span>
+          {/* <span style={{ color: colors.textSecondary }}>/</span>     */}
+          {/* <span style={{ fontSize: "16px" }}>🏠</span> */}
           <span style={{ color: colors.textSecondary }}>/</span>
-          <span style={{ color: colors.textSecondary }}>Scans</span>
+          <span style={{ color: colors.textSecondary }}>Private Assets</span>
           <span style={{ color: colors.textSecondary }}>/</span>
           <span style={{ color: colors.accent, fontWeight: "500" }}>
-            {scan.name}
+            New Scan
           </span>
         </div>
 
@@ -117,7 +123,7 @@ export default function ScanDetail({ scan, onBack, onExport, onStop }) {
       <div
         style={{
           flex: 1,
-          padding: isMobile ? "16px" : "24px",
+          padding: isMobile ? "16px" : "20px",
           backgroundColor: colors.bg,
           overflowY: "auto",
         }}
@@ -128,20 +134,30 @@ export default function ScanDetail({ scan, onBack, onExport, onStop }) {
             backgroundColor: colors.card,
             border: `1px solid ${colors.border}`,
             borderRadius: "12px",
-            padding: isMobile ? "20px" : "32px",
-            marginBottom: "24px",
+            padding: isMobile ? "16px" : "24px",
+            marginBottom: "20px",
           }}
         >
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: isMobile ? "1fr" : "auto 1fr",
-              gap: "32px",
+              gridTemplateColumns: isMobile ? "1fr" : "auto auto 1fr",
+              gap: "24px",
               alignItems: "center",
-              marginBottom: "32px",
+              marginBottom: "24px",
             }}
           >
             <ProgressCircle progress={scan.progress} status={scan.status} />
+            {!isMobile && (
+              <div
+                style={{
+                  width: "1px",
+                  height: "100px",
+                  backgroundColor: colors.border,
+                  opacity: 0.6,
+                }}
+              />
+            )}
             <div style={{ flex: 1 }}>
               <StepIndicator
                 steps={scan.steps}
@@ -156,9 +172,10 @@ export default function ScanDetail({ scan, onBack, onExport, onStop }) {
               display: "grid",
               gridTemplateColumns: isMobile
                 ? "1fr"
-                : "repeat(auto-fit, minmax(150px, 1fr))",
-              gap: "20px",
+                : "repeat(auto-fit, minmax(140px, 1fr))",
+              gap: "16px",
               paddingTop: "24px",
+              marginTop: "24px",
               borderTop: `1px solid ${colors.border}`,
             }}
           >
@@ -187,9 +204,9 @@ export default function ScanDetail({ scan, onBack, onExport, onStop }) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "1fr 400px",
-            gap: "24px",
-            marginBottom: "24px",
+            gridTemplateColumns: isMobile ? "1fr" : "1fr 380px",
+            gap: "20px",
+            marginBottom: "20px",
           }}
         >
           {/* Left: Live Scan Console */}
@@ -198,7 +215,7 @@ export default function ScanDetail({ scan, onBack, onExport, onStop }) {
               backgroundColor: colors.card,
               border: `1px solid ${colors.border}`,
               borderRadius: "12px",
-              padding: "20px",
+              padding: "16px",
             }}
           >
             <div
@@ -235,18 +252,18 @@ export default function ScanDetail({ scan, onBack, onExport, onStop }) {
 
             <div
               style={{
-                marginBottom: "16px",
+                marginBottom: "12px",
                 borderBottom: `1px solid ${colors.border}`,
               }}
             >
-              <div style={{ display: "flex", gap: "24px" }}>
+              <div style={{ display: "flex", gap: "16px" }}>
                 <button
                   onClick={() => setActiveTab("activity")}
                   style={{
                     background: "none",
                     border: "none",
-                    padding: "12px 0",
-                    fontSize: "14px",
+                    padding: "10px 0",
+                    fontSize: "13px",
                     fontWeight: activeTab === "activity" ? "600" : "400",
                     color:
                       activeTab === "activity"
@@ -267,8 +284,8 @@ export default function ScanDetail({ scan, onBack, onExport, onStop }) {
                   style={{
                     background: "none",
                     border: "none",
-                    padding: "12px 0",
-                    fontSize: "14px",
+                    padding: "10px 0",
+                    fontSize: "13px",
                     fontWeight: activeTab === "verification" ? "600" : "400",
                     color:
                       activeTab === "verification"

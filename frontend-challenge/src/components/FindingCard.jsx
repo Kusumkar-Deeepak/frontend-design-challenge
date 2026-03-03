@@ -22,8 +22,8 @@ export default function FindingCard({ finding }) {
         backgroundColor: colors.card,
         border: `1px solid ${colors.border}`,
         borderRadius: "12px",
-        padding: "16px",
-        marginBottom: "12px",
+        padding: "12px",
+        marginBottom: "8px",
         cursor: "pointer",
         transition: "all 0.15s ease",
         boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
@@ -42,7 +42,7 @@ export default function FindingCard({ finding }) {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "start",
-          marginBottom: "12px",
+          marginBottom: "10px",
         }}
       >
         <span
@@ -52,24 +52,24 @@ export default function FindingCard({ finding }) {
             borderRadius: "999px",
             backgroundColor: severityColor.bg,
             color: severityColor.text,
-            fontSize: "12px",
+            fontSize: "11px",
             fontWeight: "600",
             border: `1px solid ${severityColor.border}`,
           }}
         >
           {finding.severity}
         </span>
-        <span style={{ fontSize: "12px", color: colors.textSecondary }}>
+        <span style={{ fontSize: "11px", color: colors.textSecondary }}>
           {finding.time}
         </span>
       </div>
 
       <h3
         style={{
-          fontSize: "15px",
+          fontSize: "14px",
           fontWeight: "600",
           color: colors.text,
-          marginBottom: "8px",
+          marginBottom: "6px",
           lineHeight: "1.4",
         }}
       >
@@ -78,14 +78,15 @@ export default function FindingCard({ finding }) {
 
       <div
         style={{
-          fontSize: "13px",
-          color: colors.accent,
+          fontSize: "12px",
+          color: colors.textSecondary,
           backgroundColor: colors.hover,
           padding: "6px 10px",
           borderRadius: "6px",
           fontFamily: "'Courier New', monospace",
-          marginBottom: "8px",
+          marginBottom: "6px",
           wordBreak: "break-all",
+          fontWeight: "400",
         }}
       >
         {finding.endpoint}

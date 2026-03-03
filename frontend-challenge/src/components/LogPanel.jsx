@@ -42,12 +42,12 @@ export default function LogPanel({ logs }) {
       style={{
         backgroundColor: isDark ? "#0F0F0F" : "#1A1A1A",
         borderRadius: "8px",
-        padding: "16px",
-        height: "400px",
+        padding: "12px",
+        height: "360px",
         overflowY: "auto",
         fontFamily: "'Courier New', monospace",
-        fontSize: "13px",
-        lineHeight: "1.6",
+        fontSize: "12px",
+        lineHeight: "1.5",
         color: "#E5E7EB",
       }}
     >

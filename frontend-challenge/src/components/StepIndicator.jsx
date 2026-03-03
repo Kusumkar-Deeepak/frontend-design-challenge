@@ -14,9 +14,10 @@ export default function StepIndicator({ steps, currentStep }) {
       style={{
         display: "flex",
         alignItems: "center",
-        gap: "24px",
-        flexWrap: "wrap",
+        gap: "16px",
+        flexWrap: "nowrap",
         justifyContent: "center",
+        overflowX: "auto",
       }}
     >
       {steps.map((step, index) => {
@@ -27,20 +28,20 @@ export default function StepIndicator({ steps, currentStep }) {
         return (
           <div
             key={step}
-            style={{ display: "flex", alignItems: "center", gap: "24px" }}
+            style={{ display: "flex", alignItems: "center", gap: "16px" }}
           >
             <div
               style={{
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                gap: "8px",
+                gap: "6px",
               }}
             >
               <div
                 style={{
-                  width: "48px",
-                  height: "48px",
+                  width: "40px",
+                  height: "40px",
                   borderRadius: "50%",
                   backgroundColor: isActive
                     ? colors.accent + "20"
@@ -51,13 +52,13 @@ export default function StepIndicator({ steps, currentStep }) {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontSize: "18px",
+                  fontSize: "16px",
                   color:
                     isActive || isCompleted
                       ? colors.accent
                       : colors.textSecondary,
                   fontWeight: "600",
-                  boxShadow: isActive ? `0 0 20px ${colors.accent}40` : "none",
+                  boxShadow: isActive ? `0 0 12px ${colors.accent}30` : "none",
                   transition: "all 0.3s ease",
                 }}
               >
@@ -65,7 +66,7 @@ export default function StepIndicator({ steps, currentStep }) {
               </div>
               <div
                 style={{
-                  fontSize: "13px",
+                  fontSize: "12px",
                   fontWeight: isActive ? "600" : "400",
                   color:
                     isActive || isCompleted
@@ -81,8 +82,8 @@ export default function StepIndicator({ steps, currentStep }) {
             {index < steps.length - 1 && (
               <div
                 style={{
-                  width: "40px",
-                  height: "2px",
+                  width: "32px",
+                  height: "1.5px",
                   backgroundColor: isCompleted ? colors.accent : colors.border,
                   transition: "background-color 0.3s ease",
                 }}
