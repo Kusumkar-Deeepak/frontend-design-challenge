@@ -1,7 +1,7 @@
 import AuthCard from "../components/AuthCard";
 import FeatureList from "../components/FeatureList";
 
-function SignUp() {
+function SignUp({ onLogin }) {
   return (
     <div className="flex flex-col lg:flex-row min-h-screen relative overflow-hidden">
       {/* Base linear gradient */}
@@ -38,7 +38,7 @@ function SignUp() {
         }}
       ></div>
 
-      {/* Left secton - content */}
+      {/* Left section -content */}
       <div
         className="w-full lg:w-1/2 text-white flex flex-col"
         style={{
@@ -68,7 +68,7 @@ function SignUp() {
             marginTop: "40px",
           }}
         >
-          {/* main headling */}
+          {/* main headiing */}
           <h1
             className="font-bold"
             style={{
@@ -83,7 +83,7 @@ function SignUp() {
             in <span style={{ color: "#14B8A6" }}>hours</span> not weeks.
           </h1>
 
-          {/* whats included secton */}
+          {/* whats included section */}
           <div>
             <p
               className="font-medium"
@@ -100,7 +100,7 @@ function SignUp() {
           </div>
         </div>
 
-        {/* trustpilot rating at botom */}
+        {/* trustpilot rating at bottom */}
         <div
           className="relative z-10"
           style={{ marginTop: "auto", paddingTop: "40px" }}
@@ -139,7 +139,7 @@ function SignUp() {
           zIndex: 1,
         }}
       >
-        <AuthCard />
+        <AuthCard onLogin={onLogin} />
       </div>
     </div>
   );

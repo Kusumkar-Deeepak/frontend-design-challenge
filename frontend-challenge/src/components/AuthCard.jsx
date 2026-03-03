@@ -2,7 +2,7 @@ import { useState } from "react";
 import AuthInput from "./AuthInput";
 import SocialButton from "./SocialButton";
 
-function AuthCard() {
+function AuthCard({ onLogin }) {
   const [isSignUp, setIsSignUp] = useState(true);
   const [agreed, setAgreed] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -15,8 +15,10 @@ function AuthCard() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // submiting form data
     console.log(formData);
+    if (onLogin) {
+      onLogin();
+    }
   };
 
   return (
@@ -194,7 +196,7 @@ function AuthCard() {
         </button>
       </form>
 
-      {/* social login butns */}
+      {/* social login btns */}
       <div className="flex" style={{ marginTop: "20px", gap: "12px" }}>
         <SocialButton label="Apple" bgColor="#000000" />
         <SocialButton label="Google" bgColor="#E5E7EB" textColor="#111827" />
