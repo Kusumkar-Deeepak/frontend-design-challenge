@@ -1,16 +1,81 @@
-# React + Vite
+aps
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a frontend implementation of a cybersecurity vulnerability management dashboard. The goal was to build an interface similar to what you would find in a real enterprise security platform. It focuses on presenting scan data, vulnerability summaries, and scan activity in a way that is clear, responsive, and easy to interact with.
 
-Currently, two official plugins are available:
+The application is built with React and Vite and uses a component‑based structure to keep the UI modular and maintainable.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Overview
+The dashboard simulates how security teams monitor vulnerability scans across different assets. It includes a main dashboard with scan statistics and a table of scans. Selecting a scan opens a side panel that displays detailed information about the scan, including progress, logs, and detected vulnerabilities.
 
-## React Compiler
+The project uses mock data so the interface behaves like a real application without requiring a backend service.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Tech Stack
+React
 
-## Expanding the ESLint configuration
+Vite
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+React Router
+
+Tailwind CSS
+
+Context API for theme management
+
+Key Features
+Dashboard
+The main dashboard shows an overview of security scans. It includes severity cards for vulnerabilities and a table listing all scans. The table supports search, filtering, and pagination so the data remains manageable even with larger lists.
+
+Clicking a scan row opens a slide‑in panel from the right side of the screen that shows the detailed scan view.
+
+Scan Detail View
+The scan detail panel provides more context about a selected scan. It includes:
+
+Circular progress indicator showing scan progress
+
+Step tracker for the scan pipeline
+
+Scan metadata such as targets, credentials, and files
+
+Live scan console with activity logs
+
+Finding log displaying vulnerabilities with severity labels
+
+Theme System
+The interface supports light and dark themes. The theme state is managed with React Context and stored in localStorage so the selected theme persists across sessions.
+
+Responsive Layout
+The layout is designed to work across different screen sizes. On desktop the scan detail view appears as a side panel, while on smaller screens it expands to full width.
+
+Project Structure
+src/
+
+components/ – reusable UI components used throughout the app
+
+pages/ – main route level views such as authentication and dashboard
+
+context/ – global state providers such as the theme context
+
+data/ – mock data used to simulate scan results
+
+App.jsx – root component with application routing
+
+Running the Project
+Install dependencies:
+
+npm install
+
+Start the development server:
+
+npm run dev
+
+Build the project for production:
+
+npm run build
+
+Preview the production build:
+
+npm run preview
+
+Notes
+This project focuses on frontend architecture and UI behavior. The scan data and logs are mocked to simulate how the interface would behave in a real security platform.
+
+The structure is designed so a backend API could be integrated later without major changes to the UI components.
